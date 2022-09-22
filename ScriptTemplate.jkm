@@ -1,0 +1,7 @@
+[Common Keys]
+Shift+F12=ToggleDebugMode
+Control+F12=TestCode
+F12=ShowMSAAChildren
+Alt+F12=ShowMSAASiblings
+Alt+Shift+F12=ShowMSAAAncestors
+

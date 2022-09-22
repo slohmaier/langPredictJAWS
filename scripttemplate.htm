@@ -1,0 +1,1314 @@
+JAWS Script Template
+Version 0.2
+Public Domain by Jamal Mazrui
+February 24, 2010
+
+Contents
+
+Introduction
+Change Log
+ActiveItemChangedEvent
+AppWillNotSpeakEvent
+AutoFinishEvent
+AutoStartEvent
+BottomEdgeEvent
+CellChangedEvent
+ClipboardChangedEvent
+ControllerModeChangedEvent
+CursorShapeChangedEvent
+DescriptionChangedEvent
+DialogPageChangedEvent
+DocumentLoadedEvent
+FocusChangedEvent
+FocusPointMovedEvent
+ForegroundIconicEvent
+ForegroundWindowChangedEvent
+FormsModeEvent
+FrameLoadedEvent
+HelpBalloonEvent
+InternalFrameChangedEvent
+ItemNotFoundEvent
+JavaFocusChangedEvent
+KeyPressedEvent
+MagSendKeyEvent
+MenuModeEvent
+MouseButtonEvent
+MouseMovedEvent
+NameChangedEvent
+NewTextEvent
+ObjStateChangedEvent
+PageChangedEvent
+PageSectionColumnChangedEvent
+PhoneCallEvent
+RemoteControllerModeChangedEvent
+SayAllStoppedEvent
+ScreenMagnifiedEvent
+ScreenStabilizedEvent
+SelectionContextChangedEvent
+SpeechToggledEvent
+TableEnteredEvent
+TableExitedEvent
+TabStopEvent
+TandemConnectionEvent
+TextSelectedEvent
+ToolTipEvent
+TopEdgeEvent
+TutorMessageEvent
+ValueChangedEvent
+WindowActivatedEvent
+WindowCreatedEvent
+WindowDestroyedEvent
+WindowMinMaxEvent
+WindowResizedEvent
+
+----------
+
+Introduction
+
+This is a template for a set of JAWS scripts to be associated with an application.  The first step in using it is to copy ScriptTemplate.jss and ScriptTemplate.jkm to Application.jss and Application.jkm -- where Application refers to the program you want to script for improved accessibility or usability.
+
+The template contains about 60 event handler functions found in Default.jss of JAWS 11.0.  You would first define functions that test for application contexts based on characteristics such as window title, control type, and active cursor.  If automatic speech is not satisfactory after an event in a particular context, then you add code to the event handler function after testing for the context.  After all defined contexts have been tested for special handling, the event handler in Default.jss is called for any other contexts.
+
+The template contains debugging support via combinations of the F12 key.  Shift+F12 toggles a debug mode in which each event is announced before the speech it produces, if any.  By default, all events are announced when debug mode is on.  Since this may produce too much speech when you are trying to isolate particular events, you can suppress the announcement for any particular event.  This is done by removing the semicolon from the following line in the event handler function:
+
+; Let bNoDebug = True
+
+Uncomment such a line in each event handler whose announcement you want to suppress in debug mode.
+
+Other debugging keys show MSAA information in a virtual view (or copy it to the clipboard if the text is too large).  F12 shows properties of the current object and its children, if any.  Alt+F12 shows properties of the current object and its siblings.  Alt+Shift+F12 shows proprties of the parent of the current object and above.  The active JAWS and Windows versions are included at the top of the information.  If helpful information is found to be available via these keys, then MSAA functions of the JAWS scripting language may be used to retrieve it.  The header file MSAA.jsh is included in this distribution.
+
+Control+F12 may also be used for debugging.  Insert any code you wish to try in the TestCode script, then use that key to run it.
+
+You can add other functions and scripts in Application.jss above the event handler functions.  An example of this template in action is the script set for Mozilla Thunderbird -- in fact, the template grew out of my experience scripting this application.  Those scripts are available at
+http://EmpowermentZone.com/tb_scr.exe
+
+or .zip for a manual install.
+
+Below is official documentation (from fsdn.chm) on the events that JAWS can handle.
+
+Jamal Mazrui
+jamal@EmpowermentZone.com
+Twitter screen name: JamalMazrui
+
+
+
+----------
+
+Change Log
+
+Version 0.2 on February 24, 2010
+
+Added missing ActiveItemChangedEvent and NewTextEvent functions (thanks to Jim Homme).  Added debugging keys for showing MSAA information and testing code.
+----------
+
+ActiveItemChangedEvent
+The MSAAMode flag must be set to 2 in the [Options] section of your application-specific jcf file to enable this function. This function receives the following parameters: the handle for the window containing the current object, the iD of the object, the iD of the child object, the handle of the previous window, the iD of the previous object, and the iD of the previous child object.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: the handle of the window containing the current object.
+Include: Required
+
+Param 2:
+Type: Int
+Description: the iD of the current object.
+Include: Required
+
+Param 3:
+Type: Int
+Description: the iD of the current child.
+Include: Required
+
+Param 4:
+Type: Handle
+Description: the handle of the window containing the previous object.
+Include: Required
+
+Param 5:
+Type: Int
+Description: The iD or the previous object.
+Include: Required
+
+Param 6:
+Type: Int
+Description: the iD of the previous child.
+Include: Required
+
+----------
+
+AppWillNotSpeakEvent
+
+Produces the "Cannot speak in Restricted Mode" message when authorization is either not found or inaccurate.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: String
+Description: the name of the application that will not speak in restricted mode.
+Include: Required
+
+----------
+
+AutoFinishEvent
+
+The function is invoked when the application is closed by loosing focus when F4 is pressed. It also gets performed when the application is switched from or looses focus, as with ALT+TAB.
+Returns
+Type: Void
+
+Parameters
+No Parameters
+
+----------
+
+AutoStartEvent
+
+When the application is started this event gets performed. It also gets performed when the application is switched to or gets focus, as with ALT+TAB.
+Returns
+Type: Void
+
+Parameters
+No Parameters
+
+----------
+
+BottomEdgeEvent
+
+When the active cursor attempts to move beyond the bottom edge of the active window, this function is called and receives the window handle as a parameter.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the window whose bottom boundary was reached.
+Include: Required
+
+----------
+
+CellChangedEvent
+
+This event function is triggered when the cursor moves from one cell in a table to a new cell in either the same table or a nested table or parent table.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description:
+Include: Required
+
+Param 2:
+Type: int
+Description:
+Include: Required
+
+Param 3:
+Type: int
+Description:
+Include: Required
+
+Param 4:
+Type: int
+Description:
+Include: Required
+
+Param 5:
+Type: int
+Description:
+Include: Required
+
+Param 6:
+Type: int
+Description:
+Include: Required
+
+Param 7:
+Type: int
+Description:
+Include: Required
+
+Param 8:
+Type: int
+Description:
+Include: Required
+
+----------
+
+ClipboardChangedEvent
+
+This event is called whenever the contents of the Windows clipboard is replaced.
+Returns
+Type: Void
+
+Parameters
+No Parameters
+
+----------
+
+ControllerModeChangedEvent
+
+Used to play a sound to notify the controller user when the session has been suspended or resumed.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description: The mode of the controller, full screen, minimized or UAC.
+Include: Required
+
+----------
+
+CursorShapeChangedEvent
+
+The name of the new shape is passed to this function via a string variable.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: String
+Description: the string value for the current cursor type.
+Include: Required
+
+----------
+
+DescriptionChangedEvent
+
+This function receives the following parameters: The window handle of the window containing the current object, The ID number of the Object, The ID number of the Child Object, The type of the Object, The old Description of the object, and The current Description of the Object.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: The window handle of the window containing the current object.
+Include: Required
+
+Param 2:
+Type: Int
+Description: The ID number of the Object.
+Include: Required
+
+Param 3:
+Type: Int
+Description: The ID number of the Child Object.
+Include: Required
+
+Param 4:
+Type: Int
+Description: The type of the Object.
+Include: Required
+
+Param 5:
+Type: String
+Description: The old Description of the object.
+Include: Required
+
+Param 6:
+Type: String
+Description: The current Description of the object.
+Include: Required
+
+----------
+
+DialogPageChangedEvent
+
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: the handle of the window containing the page of the dialog that is currently active.
+Include: Required
+
+Param 2:
+Type: Handle
+Description: the handle of the window containing the page of the dialog that was previously active.
+Include: Required
+
+----------
+
+DocumentLoadedEvent
+
+When an internet explorer document is loaded it will automatically begin reading.
+Returns
+Type: Void
+
+Parameters
+No Parameters
+
+----------
+
+FocusChangedEvent
+
+The window handles of the previous and current windows are passed to this function. This function calls either SayWindowTypeAndText SayFocusedWindow or SayFocusedObject in order to ensure that the active control is properly spoken.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: the handle of the window that has received the focus.
+Include: Required
+
+Param 2:
+Type: Handle
+Description: the handle of the window that previously had the focus.
+Include: Required
+
+----------
+
+FocusPointMovedEvent
+
+It is called when the pixel location of the blinking caret or highlight changes. Note that the pixel location is determined by video resolution as in row and column coordinates. Because this function will be called quite frequently, it is recommended that you avoid from intensive tasks that will be performed each time the PC cursor moves. For a list of parameters received by FocusPointMovedEvent and their descriptions, look at the Existing Parameters List box on the Parameters page.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Int
+Description: Current horizontal coordinate of the PC cursor.
+Include: Required
+
+Param 2:
+Type: Int
+Description: Current vertical coordinate of the PC cursor.
+Include: Required
+
+Param 3:
+Type: Int
+Description: Previous horizontal coordinate of the PC cursor.
+Include: Required
+
+Param 4:
+Type: Int
+Description: Previous vertical coordinate of the PC cursor.
+Include: Required
+
+Param 5:
+Type: Int
+Description: The unit of movement as constant variables defined in HJConst.jsh.
+Include: Required
+
+Param 6:
+Type: Int
+Description: The direction of movement as constant variables defined in HJConst.jsh.
+Include: Required
+
+Param 7:
+Type: Int
+Description: The amount of time (milliseconds)that has elapsed since the movement occurred.
+Include: Required
+
+----------
+
+ForegroundIconicEvent
+
+This event function is fired when all apps are minimized or closed and the focus is not placed on the desktop. More testing is needed before it is implemented.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of current Foregound Window, not focus.
+Include: Required
+
+----------
+
+ForegroundWindowChangedEvent
+
+A real window is a window which has a title. Real windows are often application main windows, and dialog main windows.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the new window.
+Include: Required
+
+----------
+
+FormsModeEvent
+
+This function is activated whenever forms mode is entered or exited. It is passed a boolian value indicating which of these actions has taken place. If bEntering is equal to true, forms mode has been turned on. If bEntering is equal to false, forms mode has been turned off.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Int
+Description: This is the boolian value representing the current state of forms mode
+Include: Required
+
+----------
+
+FrameLoadedEvent
+
+This function is fired when a web page loads content into a frame.
+Returns
+Type: void
+
+Parameters
+Param 1:
+Type: handle
+Description: the handle to the parent document's window
+Include: Required
+
+Param 2:
+Type: string
+Description: the name of the frame being updated
+Include: Required
+
+Param 3:
+Type: int
+Description: The index of the frame being updated.
+Include: Required
+
+----------
+
+HelpBalloonEvent
+
+In Windows XP two kinds of bubbles pop up displaying help, the first is a tooltip which is picked up by the ToolTipEvent and the second is a Help Balloon which triggers this event.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: the handle to the Help Balloon window.
+Include: Required
+
+Param 2:
+Type: String
+Description: the text of the help balloon.
+Include: Required
+
+----------
+
+InternalFrameChangedEvent
+
+This function is used to speak the frame name before FocusChangedEvent is called to speak the FocusObject
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: handle of the window to check.
+Include: Required
+
+Param 2:
+Type: Handle
+Description: Handle of the window containing the frame.
+Include: Required
+
+Param 3:
+Type: String
+Description: The name of the frame.
+Include: Required
+
+----------
+
+ItemNotFoundEvent
+
+Event called by JAWS when information can not be found in the Off Screen Model.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Int
+Description: Integer argument. Handle of the window where the item was not found.
+Include: Required
+
+----------
+
+JavaFocusChangedEvent
+
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: The window that has received focus.
+Include: Required
+
+Param 2:
+Type: Handle
+Description: The window that previously had focus.
+Include: Required
+
+----------
+
+KeyPressedEvent
+
+All key presses cause this function to fire. If the key is assigned to a script, then KeyPressedEvent is called before the script itself. Because this function will be called quite frequently, it is recommended that you refrain from intensive tasks that will be performed each time a keystroke is pressed. For a list of parameters received by KeyPressedEvent and their descriptions, look at the Existing Parameters List box on the Parameters page.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Int
+Description: the numeric keycode.
+Include: Required
+
+Param 2:
+Type: String
+Description: the name as it would be used in a keymap.
+Include: Required
+
+Param 3:
+Type: Int
+Description: 1 if this was a key on the Braille Display.
+Include: Required
+
+Param 4:
+Type: Int
+Description: nIsScriptKey 1 if This keystroke is assigned to a script.
+Include: Required
+
+----------
+
+MagSendKeyEvent
+
+If a MAGic key event is attached to a key in a key map file, then you can use this function to send the key event on to the MAGic Interface. For example, when the key is pressed to toggle magnification, the KI_MAGONOFF needs to be passed on to the MAGic user interface for processing.
+Returns
+Type: Int
+Description: If MAGic is not running, or nKICode is out of range, then the function will return FALSE. Otherwise, TRUE is returned.
+
+Parameters
+Param 1:
+Type: Int
+Description: The code for the key event. These codes can be found in magcodes.jsh.
+Include: Required
+
+----------
+
+MenuModeEvent
+
+There are three menu modes as defined in HJCONST.JSH. They are: MENU_INACTIVE, MENUBAR_ACTIVE, and MENU_ACTIVE. This event receives the Handle of the menu and the mode of the menu as parameters.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the menu
+Include: Required
+
+Param 2:
+Type: Int
+Description: The mode of the menu whose status has just changed
+Include: Required
+
+----------
+
+MouseButtonEvent
+
+This function is passed an event identifier. See HJConst.h for a list of possible MouseButtonEvent identifiers.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Int
+Description: The event identifier of the event.
+Include: Required
+
+Param 2:
+Type: Int
+Description: The horizontal position of the mouse pointer in pixels.
+Include: Required
+
+Param 3:
+Type: Int
+Description: The vertical position of the mouse pointer.
+Include: Required
+
+----------
+
+MouseMovedEvent
+
+This function is passed two integers. The first value specifies the x-coordinate at the position of the mouse pointer. The second parameter specifies the y-coordinate and the position of the mouse pointer.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Int
+Description: The horizontal position of the mouse pointer in pixels.
+Include: Required
+
+Param 2:
+Type: Int
+Description: The vertical position of the mouse pointer.
+Include: Required
+
+----------
+
+NameChangedEvent
+
+This function receives the following parameters: The window handle of the window containing the current object, The ID number of the Object, The ID number of the Child Object, The type of the Object, The old name of the object, and The current name of the Object.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: The window handle of the window containing the current object.
+Include: Required
+
+Param 2:
+Type: Int
+Description: The ID number of the Object.
+Include: Required
+
+Param 3:
+Type: Int
+Description: The ID number of the Child Object.
+Include: Required
+
+Param 4:
+Type: Int
+Description: The type of the Object.
+Include: Required
+
+Param 5:
+Type: String
+Description: The old name of the object.
+Include: Required
+
+Param 6:
+Type: String
+Description: The current name of the object.
+Include: Required
+
+----------
+
+NewTextEvent
+
+When this function is called, it receives information pertaining to the newly written text. If the text was written in a frame, then the text is spoken according to the frame's echo setting. Otherwise the text is sent to SayHighlightedText() or SayNonHighlightedText. For a list of parameters received by NewTextEvent and their descriptions, look at the Existing Parameters List box on the Parameters page.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the window containing the text that was written.
+Include: Required
+
+Param 2:
+Type: String
+Description: String containing the text that was written.
+Include: Required
+
+Param 3:
+Type: Int
+Description: The attributes of the text that was written.
+Include: Required
+
+Param 4:
+Type: Int
+Description: The foreground color of the text that was written.
+Include: Required
+
+Param 5:
+Type: Int
+Description: The background color of the text that was written.
+Include: Required
+
+Param 6:
+Type: Int
+Description: The echo setting associated with this text.
+Include: Required
+
+Param 7:
+Type: String
+Description: The name of the frame containing the newly written text if applicable.
+Include: Required
+
+----------
+
+ObjStateChangedEvent
+
+By default, this function will now speak the checked and not checked status as the object's state changes. In doing so, we are no longer reliant on the KeyPressedEvent function.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the window whose state, or whose child object's state, has changed.
+Include: Required
+
+Param 2:
+Type: int
+Description: The type of the object.
+Include: Optional
+
+Param 3:
+Type: int
+Description: The changed state, which is the difference between the old state and the current state.
+Include: Optional
+
+Param 4:
+Type: int
+Description: The current state.
+Include: Optional
+
+Param 5:
+Type: int
+Description: The old state.
+Include: Optional
+
+----------
+
+PageChangedEvent
+
+This event fires when Internet Explorer switches to a new page tab.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: handle
+Description: The handle of the page.
+Include: Required
+
+Param 2:
+Type: string
+Description: The name of the page of the foreground tab.
+Include: Required
+
+----------
+
+PageSectionColumnChangedEvent
+
+For apps supporting SelectionContext events such as MSWord, announces changes in page, section, text columns, and text column counts.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description:
+Include: Required
+
+Param 2:
+Type: int
+Description:
+Include: Required
+
+Param 3:
+Type: int
+Description:
+Include: Required
+
+Param 4:
+Type: int
+Description:
+Include: Required
+
+Param 5:
+Type: int
+Description:
+Include: Required
+
+Param 6:
+Type: int
+Description:
+Include: Required
+
+Param 7:
+Type: int
+Description:
+Include: Required
+
+Param 8:
+Type: int
+Description:
+Include: Required
+
+----------
+
+PhoneCallEvent
+
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description: Phone call type. 1=incoming call; 2=answered call; 3=ended call.
+Include: Required
+
+Param 2:
+Type: BOOL
+Description: TRUE if the JCF option MuteSynthOnPhoneCall is set to 1. Else FALSE.
+Include: Required
+
+----------
+
+RemoteControllerModeChangedEvent
+
+Used to notify the target user that the remote controller has suspended or resumed the tandem session.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description: The mode of the remote controller, minimized or full screen.
+Include: Required
+
+----------
+
+SayAllStoppedEvent
+
+User-defined code can be added to an overwritten version of this function to run every time SayAll stops.
+Returns
+Type: Void
+
+Parameters
+No Parameters
+
+----------
+
+ScreenMagnifiedEvent
+
+Announces the magnification level as it changes.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description: Magnification on/off
+Include: Required
+
+Param 2:
+Type: int
+Description: The new level of magnification
+Include: Required
+
+----------
+
+ScreenStabilizedEvent
+
+This event is triggered after no screen writes have occured within a reasonable amount of time. The window handle of the last window to which text was written is passed as the parameter to this event.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: the window handle where the last text write occured.
+Include: Required
+
+----------
+
+SelectionContextChangedEvent
+
+This event function is triggered when any of the enabled selection context data flags changes as one navigates in supported applications. Where extra contextual information is required to report the change in context, relevant flags and strings are filled in with data. For example, navigating into a formfield, nData1 will be the type(see WT_CONSTANTS), nData2 will be the state, sDesc1 the prompt, sDesc2 the value, sDesc3 the positional information and sDesc4 the extra help information if available. For comments, sDesc1 is the author's name, sDesc2 the initials, sDesc3 the text of the actual comment. For footnotes or endnotes, sDesc1 is the reference id and sDesc2 the text of the note. For bookmarks and smart tags, sDesc1 is the name of the item. For revisions, nData1 is the type of revision, sDesc1 the author, sDesc2 the initials and sDesc3 the text. For shapes or objects, nData1 is a type specifier, nData2 a builtin shape type, sDesc1 the name of the object, sDesc2 the text, and sDesc3 the dimentions. The units of measure used for the dimentions are in the current desired units of measure as defined by the smmSetDesiredUnitsOfMeasure function. For selCtxPageSectionColumnBreaks, nData1=column number, nData2=number of text columns sDesc1=page n, sDesc2=sectiony , sDesc3=z text columns (text column count) sDesc4= column j (where j is the number of the text column) For other contextual information such as spelling and grammar, the relevant bit of the context flags will be set in the new and cleared in the old to indicate moving into an error, or vice versa when exiting. Table info should be gathered from the table specific events. See hjconsnt.jsh for the selCtx constant bit values.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description:
+Include: Required
+
+Param 2:
+Type: int
+Description:
+Include: Required
+
+Param 3:
+Type: int
+Description:
+Include: Required
+
+Param 4:
+Type: int
+Description:
+Include: Required
+
+Param 5:
+Type: string
+Description:
+Include: Required
+
+Param 6:
+Type: string
+Description:
+Include: Required
+
+Param 7:
+Type: string
+Description:
+Include: Required
+
+Param 8:
+Type: string
+Description:
+Include: Required
+
+Param 9:
+Type: string
+Description:
+Include: Required
+
+----------
+
+SpeechToggledEvent
+
+This function is called whenever speech is turned on or off. It is passed a boolean value indicating whether speech has been turned on or off.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Int
+Description: This is the boolean value whether speech has been turned on or off.
+Include: Required
+
+----------
+
+TableEnteredEvent
+
+This event function is triggered when the cursor moves into a table from outside a table. When this event is fired, query for any relevant Braille info for cell text or row text etc if Braille in use and then use this in the BrailleAddObjectXX table functions in the scripts.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description:
+Include: Required
+
+Param 2:
+Type: Int
+Description:
+Include: Required
+
+Param 3:
+Type: Int
+Description:
+Include: Required
+
+Param 4:
+Type: Int
+Description:
+Include: Required
+
+Param 5:
+Type: Int
+Description:
+Include: Required
+
+Param 6:
+Type: Int
+Description:
+Include: Required
+
+Param 7:
+Type: int
+Description: TRUE if titles are defined for this table, FALSE if none explicitly defined
+Include: Required
+
+Param 8:
+Type: int
+Description: The column number of the column containing row headers (0 if undefined).
+Include: Required
+
+Param 9:
+Type: int
+Description: The row number of the row containing column headers (0 if undefined).
+Include: Required
+
+----------
+
+TableExitedEvent
+
+This event function is triggered when the cursor leaves a table and returns to the surrounding document.
+Returns
+Type: Void
+
+Parameters
+No Parameters
+
+----------
+
+TabStopEvent
+
+This function gets called in supported apps when the tab key causes the position of the caret to change (ie to move to the next tab stop). It is to be used to automatically announce the new caret position. Currently this is only enabled in MSWord.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: string
+Description:
+Include: Required
+
+----------
+
+TandemConnectionEvent
+
+Used to announce when a targer or controller computer opens or closes a tandem session.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: int
+Description: The tandem app, controller or target.
+Include: Required
+
+Param 2:
+Type: int
+Description: The connection status, connected or disconnected.
+Include: Required
+
+----------
+
+TextSelectedEvent
+
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: string
+Description:
+Include: Required
+
+Param 2:
+Type: int
+Description:
+Include: Required
+
+Param 3:
+Type: int
+Description:
+Include: Optional
+
+----------
+
+ToolTipEvent
+
+Will tell the user the tool tip. Also used for the Auto Graphics Labeler.
+Returns
+Type: Void
+
+Parameters
+No Parameters
+
+----------
+
+TopEdgeEvent
+
+When the active cursor attempts to move beyond the top edge of the current window, this function is called and receives the window handle as a parameter.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the window whose top boundary was reached.
+Include: Required
+
+----------
+
+TutorMessageEvent
+
+this event is triggered after the FocusChangedEvent and when the focus moves between menu items. It is always called after NewTextEvent and hence SayHighlightedText.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: the focus window.
+Include: Required
+
+Param 2:
+Type: Int
+Description: the menu mode.
+Include: Required
+
+----------
+
+ValueChangedEvent
+
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: The window handle of the window containing the current MSAA object.
+Include: Required
+
+Param 2:
+Type: Int
+Description: The ID number of the MSAA Object.
+Include: Required
+
+Param 3:
+Type: Int
+Description: The ID number of the MSAA Child Object.
+Include: Required
+
+Param 4:
+Type: Int
+Description: The type of the MSAA Object.
+Include: Required
+
+Param 5:
+Type: String
+Description: The name of the MSAA object.
+Include: Required
+
+Param 6:
+Type: String
+Description: The current value assigned to the MSAA Object.
+Include: Required
+
+Param 7:
+Type: Int
+Description: TRUE if it's the object with focus that triggered this event, FALSE otherwise.
+Include: Optional
+
+----------
+
+WindowActivatedEvent
+
+This function is generally triggered when focus changes because of the opening or closing of a top-level window, such as when a dialog appears or disappears.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: handle
+Description: Handle of the window just activated.
+Include: Required
+
+----------
+
+WindowCreatedEvent
+
+You should not include processor consuming code within this function. The code within this function is processed very frequently.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the window just created.
+Include: Required
+
+Param 2:
+Type: Int
+Description: left edge of the window.
+Include: Required
+
+Param 3:
+Type: Int
+Description: top edge of the window.
+Include: Required
+
+Param 4:
+Type: Int
+Description: right edge of the window.
+Include: Required
+
+Param 5:
+Type: Int
+Description: bottom edge of the window.
+Include: Required
+
+----------
+
+WindowDestroyedEvent
+
+Can be modified for application specific needs.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: The handle of the window that is about to be destroyed.
+Include: Required
+
+----------
+
+WindowMinMaxEvent
+
+nMinMaxRest gives general information about what is happening to the window. It can be WE_MINIMIZE, WE_MAXIMIZE, or WE_RESTORE. nShow is more specific. For a complete list of nShow values, look for "SW_" in hjconst.jsh.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: The handle of the window whose status is about to change.
+Include: Required
+
+Param 2:
+Type: Int
+Description: Describes the general action taking place on the window.
+Include: Required
+
+Param 3:
+Type: Int
+Description: Describes the specific action taking place on the window.
+Include: Required
+
+----------
+
+WindowResizedEvent
+
+Can be modified for application specific needs.
+Returns
+Type: Void
+
+Parameters
+Param 1:
+Type: Handle
+Description: Handle of the window about to be resized.
+Include: Required
+
+Param 2:
+Type: Int
+Description: The left edge of the window that is about to be resized.
+Include: Required
+
+Param 3:
+Type: Int
+Description: The top edge of the window that is about to be resized.
+Include: Required
+
+Param 4:
+Type: Int
+Description: The right edge of the window that is about to be resized.
+Include: Required
+
+Param 5:
+Type: Int
+Description: The bottom edge of the window that is about to be resized.
+Include: Required
+
+----------
+
